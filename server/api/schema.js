@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 /**
  *  @TODO: Boomtown Schema
@@ -12,44 +12,49 @@ const { gql } = require('apollo-server-express');
  */
 module.exports = gql`
 
-  scalar Date
-
   type Item {
-    _: Boolean
+    id: ID!
+    title: String!
+    imageurl: String
+    description: String!
+    itemowner: User!
+    tags: [Tag]
+    borrower: User
   }
 
   type User {
-    _: Boolean
+    id: ID!
+    email: String!
+    fullname: String!
+    bio: String
+    items: [Item]
+    borrowed: [Item]
   }
 
   type Tag {
-    _: Boolean
-  }
-
-  type File {
-    _: Boolean
+    id: ID!
+    title: String!
   }
 
   input AssignedTag {
-    _: Boolean
-  }
-
-  input AssignedBorrower {
-    _: Boolean
+    id: ID!
+    title: String!
   }
 
   input NewItemInput {
-    _: Boolean
+    title: String!
+    description: String
+    tags: [AssignedTag]!
+  }
+
+  type Mutation {
+    addItem(item: NewItemInput!): Item
   }
 
   type Query {
     user(id: ID!): User
     viewer: User
-    items(filter: ID): [Item]
+    items(filter: ID!): [Item]
     tags: [Tag]
-  }
-
-  type Mutation {
-    addItem: Boolean
   }
 `;
