@@ -76,11 +76,11 @@ module.exports = app => {
     },
 
     User: {
-      async items(parent, args, {pgResource}, info) {
+      async items({id}, args, {pgResource}, info) {
         console.log(parent)
         console.log(args)
         try {
-          const itemowner = await pgResource.getItemsForUser(parent.id);
+          const itemowner = await pgResource.getItemsForUser(id);
           return itemowner;
         }
         catch (e) {
@@ -88,11 +88,11 @@ module.exports = app => {
         }
       },
 
-      async borrowed(parent, args, {pgResource}, info) {
+      async borrowed({id}, args, {pgResource}, info) {
         console.log(parent)
         console.log(args)
         try {
-          const borrower = await pgResource.getBorrowedItemsForUser(parent.id);
+          const borrower = await pgResource.getBorrowedItemsForUser(id);
           return borrower;
         }
         catch (e) {
@@ -102,9 +102,9 @@ module.exports = app => {
     },
 
     Item: {
-      async itemowner(parent, args, {pgResource}, info) {
+      async itemowner({ownerid}, args, {pgResource}, info) {
         try {
-          const getitemowner = await pgResource.getUserById(parent.ownerid);
+          const getitemowner = await pgResource.getUserById(ownerid);
           return getitemowner;
         }
         catch (e) {
@@ -122,9 +122,9 @@ module.exports = app => {
         }
       },
 
-      async borrower(parent, args, {pgResource}, info) {
+      async borrower({borrowerid}, args, {pgResource}, info) {
         try {
-          const borrowedItem = await pgResource.getUserById(parent.borrowerid);
+          const borrowedItem = await pgResource.getUserById(borrowerid);
           return borrowedItem;
         }
         catch (e) {
@@ -138,7 +138,7 @@ module.exports = app => {
       // ...authMutations(app),
       // -------------------------------
 
-      async addItem(parent, args, context, info) {
+      async addItem(parent, {item}, {pgResource}, info) {
         /**
          *  @TODO: Destructuring
          *
@@ -154,13 +154,18 @@ module.exports = app => {
 
         // image = await image;
         // const user = await jwt.decode(context.token, app.get('JWT_SECRET'));
-        const user = 1;
-        const newItem = await context.pgResource.saveNewItem({
-          item: args.item,
-          image: args.image,
-          user
-        });
-        return newItem;
+        try {
+          const user = 1;
+          const newItem = await pgResource.saveNewItem({
+            item: item,
+            image: undefined,
+            user
+          });
+          return newItem;
+        }
+        catch (e) {
+          throw new ApolloError(e);
+        }
       }
     }
   };
