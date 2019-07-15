@@ -162,13 +162,22 @@ module.exports = postgres => {
 
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: ``, // @TODO: Advanced query Hint: use INNER JOIN
+        text: `SELECT * 
+        FROM tags 
+        JOIN items_tag
+        ON tags.id = items_tag.tagid 
+        WHERE items_tag.itemid= $1`,
         values: [id]
       };
-
-      const tags = await postgres.query(tagsQuery);
-      return tags.rows;
+      try {
+        const tags = await postgres.query(tagsQuery);
+        return tags.rows;
+      } 
+      catch (e) {
+        throw "Tags were not found for item.";
+      }
     },
+    
     async saveNewItem({ item, user }) {
       /**
        *  @TODO: Adding a New Item
