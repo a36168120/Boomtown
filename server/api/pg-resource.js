@@ -45,7 +45,8 @@ module.exports = postgres => {
         const user = await postgres.query(findUserQuery);
         if (!user) throw "User was not found.";
         return user.rows[0];
-      } catch (e) {
+      } 
+      catch (e) {
         throw "User was not found.";
       }
     },
@@ -90,51 +91,59 @@ module.exports = postgres => {
       try {
         const user = await postgres.query(findUserQuery);
         return user.rows[0];
-      } catch (e) {
+      } 
+      catch (e) {
         throw "User was not found.";
       }
     },
 
     async getItems(idToOmit) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *
-         *  idToOmit = ownerId
-         *
-         *  Get all Items. If the idToOmit parameter has a value,
-         *  the query should only return Items were the ownerid !== idToOmit
-         *
-         *  Hint: You'll need to use a conditional AND and WHERE clause
-         *  to your query text using string interpolation
-         */
-
-        text: ``,
+      const getItems = {
+        text: `SELECT *
+        FROM items
+        WHERE ownerid != $1
+        `,
         values: idToOmit ? [idToOmit] : []
-      });
-      return items.rows;
+      };
+      try {
+        const items = await postgres.query(getItems);
+        return items.rows;
+      } 
+      catch (e) {
+        throw "Items were not found.";
+      }
     },
+
     async getItemsForUser(id) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items for user using their id
-         */
-        text: ``,
+      const getItemsForUser = {
+        text: `SELECT *
+        FROM items
+        WHERE ownerid = $1`,
         values: [id]
-      });
-      return items.rows;
+      };
+      try {
+        const items = await postgres.query(getItemsForUser);
+        return items.rows;
+      } 
+      catch (e) {
+        throw "Items were not found for owner.";
+      }
     },
-    async getBorrowedItemsForUser(id) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items borrowed by user using their id
-         */
-        text: ``,
+
+   async getBorrowedItemsForUser(id) {
+      const getBorrowedItemsForUser = {
+        text: `SELECT *
+        FROM items
+        WHERE borrowerid = $1`,
         values: [id]
-      });
-      return items.rows;
+      };
+      try {
+        const items = await postgres.query(getBorrowedItemsForUser);
+        return items.rows;
+      } 
+      catch (e) {
+        throw "Items were not found for borrower.";
+      }
     },
 
     async getTags() {
@@ -150,7 +159,7 @@ module.exports = postgres => {
         throw "Tags were not found.";
       }
     },
-    
+
     async getTagsForItem(id) {
       const tagsQuery = {
         text: ``, // @TODO: Advanced query Hint: use INNER JOIN

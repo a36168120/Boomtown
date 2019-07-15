@@ -76,28 +76,29 @@ module.exports = app => {
     },
 
     User: {
-      /**
-       *  @TODO: Advanced resolvers
-       *
-       *  The User GraphQL type has two fields that are not present in the
-       *  user table in Postgres: items and borrowed.
-       *
-       *  According to our GraphQL schema, these fields should return a list of
-       *  Items (GraphQL type) the user has lent (items) and borrowed (borrowed).
-       *
-       */
-      // @TODO: Uncomment these lines after you define the User type with these fields
-      // items() {
-      //   // @TODO: Replace this mock return statement with the correct items from Postgres
-      //   return []
-      //   // -------------------------------
-      // },
-      // borrowed() {
-      //   // @TODO: Replace this mock return statement with the correct items from Postgres
-      //   return []
-      //   // -------------------------------
-      // }
-      // -------------------------------
+      async items(parent, args, {pgResource}, info) {
+        console.log(parent)
+        console.log(args)
+        try {
+          const itemowner = await pgResource.getItemsForUser(parent.id);
+          return itemowner;
+        }
+        catch (e) {
+          throw new ApolloError(e);
+        }
+      },
+      
+      async borrowed(parent, args, {pgResource}, info) {
+        console.log(parent)
+        console.log(args)
+        try {
+          const borrower = await pgResource.getBorrowedItemsForUser(parent.id);
+          return borrower;
+        }
+        catch (e) {
+          throw new ApolloError(e);
+        }
+      }
     },
 
     Item: {
