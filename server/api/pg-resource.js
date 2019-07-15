@@ -1,18 +1,7 @@
-function tagsQueryString(tags, itemid, result) {
-  /**
-   * Challenge:
-   * This function is more than a little complicated.
-   *  - Can you refactor it to be simpler / more readable?
-   */
-  const length = tags.length;
-  return length === 0
-    ? `${result};`
-    : tags.shift() &&
-        tagsQueryString(
-          tags,
-          itemid,
-          `${result}($${tags.length + 1}, ${itemid})${length === 1 ? "" : ","}`
-        );
+
+function tagsQueryString(tags, itemId) {
+  const parts = tags.map((tag, i) => `($${i+1}, ${itemId})`);
+  return parts.join(",") + ";"
 }
 
 module.exports = postgres => {
@@ -221,23 +210,19 @@ module.exports = postgres => {
 
               const itemId = newItem.rows[0].id;
               const tagId = tags.map(tag => tag.id);
-              console.log(tagId);
-              console.log(itemId)
               // console.log([...tagId]);
               const itemTags = {
                 text: `INSERT INTO items_tag
                 (tagid, itemid )
-                VALUES ${tagsQueryString(tags, itemId, " ")}`,
+                VALUES ${tagsQueryString(tags, itemId)}`,
                 values: tagId
               };
-              console.log(itemTags);
               const newItemTags = await postgres.query(itemTags);
-              
+
               client.query("COMMIT", err => {
                 if (err) {
                   throw err;
                 }
-
                 done();
                 resolve(newItem.rows[0])
               });
