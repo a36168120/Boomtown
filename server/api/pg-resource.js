@@ -68,15 +68,6 @@ module.exports = postgres => {
         values: [id]
         // values is optional, it will always be a array and it represents the "$", also positional
       };
-
-      /**
-       *  Refactor the following code using the error handling logic described above.
-       *  When you're done here, ensure all of the resource methods in this file
-       *  include a try catch, and throw appropriate errors.
-       *
-       *  Ex: If the user is not found from the DB throw 'User is not found'
-       *  If the password is incorrect throw 'User or Password incorrect'
-       */
       try {
         const user = await postgres.query(findUserQuery);
         return user.rows[0];
@@ -168,24 +159,6 @@ module.exports = postgres => {
     },
 
     async saveNewItem({ item, user }) {
-      /**
-       *  @TODO: Adding a New Item
-       *
-       *  Adding a new Item to Posgtres is the most advanced query.
-       *  It requires 3 separate INSERT statements.
-       *
-       *  All of the INSERT statements must:
-       *  1) Proceed in a specific order.
-       *  2) Succeed for the new Item to be considered added
-       *  3) If any of the INSERT queries fail, any successful INSERT
-       *     queries should be 'rolled back' to avoid 'orphan' data in the database.
-       *
-       *  To achieve #3 we'll ue something called a Postgres Transaction!
-       *  The code for the transaction has been provided for you, along with
-       *  helpful comments to help you get started.
-       *
-       *  Read the method and the comments carefully before you begin.
-       */
 
       return new Promise((resolve, reject) => {
         /**
@@ -199,6 +172,7 @@ module.exports = postgres => {
             client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
+              // Generate new Item query
               const itemQuery = {
                 text: `INSERT INTO items
                 (title, description, ownerid)
@@ -207,10 +181,11 @@ module.exports = postgres => {
                 values: [title, description, user]
               };
               const newItem = await postgres.query(itemQuery);
-
+              
+              // Generate tag relationships query
               const itemId = newItem.rows[0].id;
               const tagId = tags.map(tag => tag.id);
-              // console.log([...tagId]);
+
               const itemTags = {
                 text: `INSERT INTO items_tag
                 (tagid, itemid )
