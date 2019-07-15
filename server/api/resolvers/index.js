@@ -9,7 +9,7 @@ const { DateScalar } = require('../custom-types');
 
 module.exports = app => {
   return {
-    Date: DateScalar,
+    // Date: DateScalar,
 
     Query: {
       viewer() {
@@ -63,8 +63,6 @@ module.exports = app => {
 
     User: {
       async items({id}, args, {pgResource}, info) {
-        console.log(parent)
-        console.log(args)
         try {
           const itemowner = await pgResource.getItemsForUser(id);
           return itemowner;
@@ -75,8 +73,6 @@ module.exports = app => {
       },
 
       async borrowed({id}, args, {pgResource}, info) {
-        console.log(parent)
-        console.log(args)
         try {
           const borrower = await pgResource.getBorrowedItemsForUser(id);
           return borrower;
