@@ -11,7 +11,7 @@ function tagsQueryString(tags, itemid, result) {
         tagsQueryString(
           tags,
           itemid,
-          `${result}($${tags.length + 1}, ${itemid})${length === 1 ? '' : ','}`
+          `${result}($${tags.length + 1}, ${itemid})${length === 1 ? "" : ","}`
         );
 }
 
@@ -19,7 +19,7 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: '', // @TODO: Authentication - Server
+        text: "", // @TODO: Authentication - Server
         values: [fullname, email, password]
       };
       try {
@@ -28,25 +28,25 @@ module.exports = postgres => {
       } catch (e) {
         switch (true) {
           case /users_fullname_key/.test(e.message):
-            throw 'An account with this username already exists.';
+            throw "An account with this username already exists.";
           case /users_email_key/.test(e.message):
-            throw 'An account with this email already exists.';
+            throw "An account with this email already exists.";
           default:
-            throw 'There was a problem creating your account.';
+            throw "There was a problem creating your account.";
         }
       }
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: '', // @TODO: Authentication - Server
+        text: "", // @TODO: Authentication - Server
         values: [email]
       };
       try {
         const user = await postgres.query(findUserQuery);
-        if (!user) throw 'User was not found.';
+        if (!user) throw "User was not found.";
         return user.rows[0];
       } catch (e) {
-        throw 'User was not found.';
+        throw "User was not found.";
       }
     },
     async getUserById(id) {
@@ -71,8 +71,12 @@ module.exports = postgres => {
        */
 
       const findUserQuery = {
-        text: '', // @TODO: Basic queries
+        text: `SELECT * 
+        FROM users 
+        WHERE id = $1 
+        LIMIT 1;`,
         values: [id]
+        // values is optional, it will always be a array and it represents the "$", also positional
       };
 
       /**
@@ -83,11 +87,14 @@ module.exports = postgres => {
        *  Ex: If the user is not found from the DB throw 'User is not found'
        *  If the password is incorrect throw 'User or Password incorrect'
        */
-
-      const user = await postgres.query(findUserQuery);
-      return user;
-      // -------------------------------
+      try {
+        const user = await postgres.query(findUserQuery);
+        return user.rows[0];
+      } catch (e) {
+        throw "User was not found.";
+      }
     },
+
     async getItems(idToOmit) {
       const items = await postgres.query({
         /**
@@ -129,10 +136,21 @@ module.exports = postgres => {
       });
       return items.rows;
     },
+
     async getTags() {
-      const tags = await postgres.query(/* @TODO: Basic queries */);
-      return tags.rows;
+      const getTags = {
+        text: `SELECT *
+        FROM tags`
+      };
+      try {
+        const tags = await postgres.query(getTags);
+        return tags.rows;
+      } 
+      catch (e) {
+        throw "Tags were not found.";
+      }
     },
+    
     async getTagsForItem(id) {
       const tagsQuery = {
         text: ``, // @TODO: Advanced query Hint: use INNER JOIN
@@ -171,7 +189,7 @@ module.exports = postgres => {
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
-            client.query('BEGIN', async err => {
+            client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
               // Generate new Item query
@@ -191,7 +209,7 @@ module.exports = postgres => {
               // -------------------------------
 
               // Commit the entire transaction!
-              client.query('COMMIT', err => {
+              client.query("COMMIT", err => {
                 if (err) {
                   throw err;
                 }
@@ -204,7 +222,7 @@ module.exports = postgres => {
             });
           } catch (e) {
             // Something went wrong
-            client.query('ROLLBACK', err => {
+            client.query("ROLLBACK", err => {
               if (err) {
                 throw err;
               }
