@@ -177,7 +177,7 @@ module.exports = postgres => {
         throw "Tags were not found for item.";
       }
     },
-    
+
     async saveNewItem({ item, user }) {
       /**
        *  @TODO: Adding a New Item
@@ -210,41 +210,45 @@ module.exports = postgres => {
             client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
-              // Generate new Item query
-              // @TODO
-              // -------------------------------
+              const itemQuery = {
+                text: `INSERT INTO items
+                (title, description, ownerid)
+                VALUES ($1, $2, $3) 
+                RETURNING *`,
+                values: [title, description, user]
+              };
+              const newItem = await postgres.query(itemQuery);
 
-              // Insert new Item
-              // @TODO
-              // -------------------------------
-
-              // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-              // @TODO
-              // -------------------------------
-
-              // Insert tags
-              // @TODO
-              // -------------------------------
-
-              // Commit the entire transaction!
+              const itemId = newItem.rows[0].id;
+              const tagId = tags.map(tag => tag.id);
+              console.log(tagId);
+              console.log(itemId)
+              // console.log([...tagId]);
+              const itemTags = {
+                text: `INSERT INTO items_tag
+                (tagid, itemid )
+                VALUES ${tagsQueryString(tags, itemId, " ")}`,
+                values: tagId
+              };
+              console.log(itemTags);
+              const newItemTags = await postgres.query(itemTags);
+              
               client.query("COMMIT", err => {
                 if (err) {
                   throw err;
                 }
-                // release the client back to the pool
+
                 done();
-                // Uncomment this resolve statement when you're ready!
-                // resolve(newItem.rows[0])
-                // -------------------------------
+                resolve(newItem.rows[0])
               });
             });
-          } catch (e) {
-            // Something went wrong
+          } 
+          catch (e) {
+            
             client.query("ROLLBACK", err => {
               if (err) {
                 throw err;
               }
-              // release the client back to the pool
               done();
             });
             switch (true) {
