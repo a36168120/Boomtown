@@ -1,4 +1,9 @@
 # Boomtown 🏙
+Boomtown is a project that is create with the basic understanding of Apollo, Express and Postgres. Currently the project only contains the server side aspect. Which includes the following:
+* establish the connection between Postgres & Apollo
+* Setup schema 
+* Setup Queries
+* Setup resolver 
 
 ## Server
 

@@ -5,7 +5,7 @@ const fallback = require('express-history-api-fallback');
 const path = require('path');
 
 module.exports = (app) => {
-  const PORT = process.env.PORT || 8000;
+  const PORT = process.env.PORT || 8080;
   app.set('PORT', PORT);
   app.set('PG_HOST', process.env.PG_HOST || 'localhost');
   app.set('PG_USER', process.env.PG_USER || 'boomtown');
