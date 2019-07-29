@@ -6,13 +6,13 @@ function setCookie({ tokenName, token, res }) {
   res.cookie(tokenName, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 1000 * 60 * 60 * 2 // 2h
+    maxAge: 1000 * 60 * 60 * 2 /* 2h */
   });
 }
 
 
 function generateToken(user, secret) {
-  const { id, email} = user; // Omit the password from the token
+  const { id, email} = user; /* Omit the password from the token */
   return jwt.sign({ id, email }, secret, {
     expiresIn: '2h'
   });

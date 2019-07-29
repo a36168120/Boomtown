@@ -11,4 +11,4 @@ module.exports = (app) => {
   });
 };
 
-// this sets the connections from the database
+/* this sets the connections from the database */

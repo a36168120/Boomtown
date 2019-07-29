@@ -51,7 +51,7 @@ module.exports = postgres => {
         WHERE id = $1 
         LIMIT 1;`,
         values: [id]
-        // values is optional, it will always be a array and it represents the "$", also positional
+        /*  values is optional, it will always be a array and it represents the "$", also positional */
       };
       try {
         const user = await postgres.query(findUserQuery);
@@ -148,11 +148,11 @@ module.exports = postgres => {
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
-            // Begin postgres transaction
+            /* Begin postgres transaction */
             client.query("BEGIN", async err => {
               const { title, description, tags } = item;
 
-              // Generate new Item query
+              /* Generate new Item query */
               const itemQuery = {
                 text: `INSERT INTO items
                 (title, description, ownerid)
@@ -162,7 +162,7 @@ module.exports = postgres => {
               };
               const newItem = await postgres.query(itemQuery);
               
-              // Generate tag relationships query
+              /* Generate tag relationships query */
               const itemId = newItem.rows[0].id;
               const tagId = tags.map(tag => tag.id);
 
