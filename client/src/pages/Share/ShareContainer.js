@@ -4,7 +4,7 @@ import Share from './Share';
 import { withStyles } from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 import { ALL_TAGS_QUERY } from '../../apollo/queries';
-
+import styles from "./styles";
 
 class ShareContainer extends Component {
   render() {
