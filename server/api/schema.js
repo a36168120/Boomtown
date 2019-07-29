@@ -2,13 +2,16 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
 
+  scalar Date
+  
   type Item {
     id: ID!
     title: String!
     imageurl: String
     description: String!
     itemowner: User!
-    tags: [Tag]
+    tags: [Tag]!
+    created: Date
     borrower: User
   }
 
@@ -31,6 +34,17 @@ module.exports = gql`
     title: String!
   }
 
+  input SignupInput {
+    fullname: String!
+    email: String!
+    password: String!
+  }
+
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
   input NewItemInput {
     title: String!
     description: String
@@ -38,6 +52,9 @@ module.exports = gql`
   }
 
   type Mutation {
+    login(user: LoginInput!): User!
+    logout: Boolean!
+    signup(user: SignupInput!): User!
     addItem(item: NewItemInput!): Item
   }
 
