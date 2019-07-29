@@ -45,26 +45,6 @@ module.exports = postgres => {
       }
     },
     async getUserById(id) {
-      /**
-       *  @TODO: Handling Server Errors
-       *
-       *  Inside of our resource methods we get to determine when and how errors are returned
-       *  to our resolvers using try / catch / throw semantics.
-       *
-       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
-       *  to display user feedback. This means we'll be catching errors and throwing new ones.
-       *
-       *  Errors thrown from our resource will be captured and returned from our resolvers.
-       *
-       *  This will be the basic logic for this resource method:
-       *  1) Query for the user using the given id. If no user is found throw an error.
-       *  2) If there is an error with the query (500) throw an error.
-       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
-       *     -- this is important, don't return the password!
-       *
-       *  You'll need to complete the query first before attempting this exercise.
-       */
-
       const findUserQuery = {
         text: `SELECT * 
         FROM users 
@@ -166,11 +146,6 @@ module.exports = postgres => {
     async saveNewItem({ item, user }) {
 
       return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         * - Read about transactions here: https://node-postgres.com/features/transactions
-         */
         postgres.connect((err, client, done) => {
           try {
             // Begin postgres transaction
@@ -194,7 +169,7 @@ module.exports = postgres => {
               const itemTags = {
                 text: `INSERT INTO items_tag
                 (tagid, itemid )
-                VALUES ${tagsQueryString(tags, itemId)}`,
+                VALUES ${tagsQueryString([...tags], itemId)}`,
                 values: tagId
               };
               const newItemTags = await postgres.query(itemTags);

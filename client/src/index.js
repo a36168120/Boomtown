@@ -11,51 +11,6 @@ import client from "./apollo";
 import AppRoutes from "./routes";
 import store from "./redux";
 import {ViewerProvider} from "./context/ViewerProvider";
-
-/**
- * @TODO: Initialize Apollo Client  (checked)
- *
- * Uncomment the following line when Apollo Client is configured:
- */
-
-/*
- * Below in your <App />, wrap your pages in an <ApolloProvider /> component
- * and pass it `client` as the `client` prop value so they will
- * have access to data exposed by your GraphQL API.
- */
-
-/**
- * @TODO: Add Routing  (checked)
- *
- *
- *
- *
- * Below in your <App />, nest your <AppRoutes /> inside of <BrowserRouter />
- * component to enable routing in your client app.
- */
-
-/**
- * @TODO: Initialize Redux Store  (checked)
- *
- * Uncomment the following line when your Redux store is configured
- *
- * import store from './redux'
- *
- * Below in your <App />, wrap a <ReduxProvider /> component around all
- * of the app's children, and pass it the imported `store` as the `store`
- * prop's value.
- */
-
-/**
- * @TODO: Add the Viewer Context
- *
- * import { ViewerProvider } from './context/ViewerProvider'
- *
- * Below in your <App />, wrap the <ViewerProvider /> component around
- * the <BrowserRouter /> component so the router is aware of whether a
- * user is currently logged in and who that user is.
- */
-
 import "./index.css";
 
 const App = () => {
