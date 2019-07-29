@@ -1,6 +1,6 @@
-// import { Query } from 'react-apollo';
-import React, { Fragment } from 'react';
-// import { VIEWER_QUERY } from '../apollo/queries';
+import { Query } from 'react-apollo';
+import React from 'react';
+import { VIEWER_QUERY } from '../apollo/queries';
 
 export const ViewerContext = React.createContext();
 
@@ -20,10 +20,7 @@ export const ViewerProvider = ({ children }) => {
             {children}
           </ViewerContext.Provider>
         );
-      }
-//     </Query>
-//   );
-// };
-
-// export { ViewerProvider };
-// export ViewerContext;
+  //     }}
+  //   </Query>
+  // );
+};
