@@ -1,28 +1,40 @@
-import React, { Fragment } from 'react';
-import { Redirect, Route, Switch } from 'react-router';
-import HomeContainer from '../pages/Home';
-import ItemsContainer from '../pages/Items';
-import ProfileContainer from '../pages/Profile';
-import ShareContainer from '../pages/Share';
+import React, { Fragment } from "react";
+import { Redirect, Route, Switch } from "react-router";
+import HomeContainer from "../pages/Home";
+import ItemsContainer from "../pages/Items";
+import ProfileContainer from "../pages/Profile";
+import ShareContainer from "../pages/Share";
+
+import FullScreenLoader from "../components/FullScreenLoader";
+import {ViewerContext} from "../context/ViewerProvider";
+import PRoute from '../components/PrivateRoute';
+import MenuBar from '../components/MenuBar';
 
 export default () => (
-  <Fragment>
-    {/* @TODO: Add your menu component here */}
-    <Switch>
-      {/**
-       * @TODO: Define routes here for: /items, /profile, /profile/:userid, and /share
-       *
-       * Provide a wildcard redirect to /items for any undefined route using <Redirect />.
-       *
-       * Later, we'll add logic to send users to one set of routes if they're logged in,
-       * or only view the /welcome page if they are not.
-       */}
-      <Route exact path = '/welcome' component = {HomeContainer} />
-      <Route exact path = '/items' component = {ItemsContainer} />
-      <Route exact path = '/profile' componet = {ProfileContainer} />
-      <Route exact path = '/profile/:userid' component = {ProfileContainer} />
-      <Route exact path = '/share' component = {ShareContainer} />
-      <Redirect from = '' to = '/items' />
-    </Switch>
-  </Fragment>
+  <ViewerContext.Consumer>
+    {({ viewer, loading }) => {
+      if (loading) return <FullScreenLoader />;
+
+      if (!viewer) {
+        return (
+          <Switch>
+            <Route exact path="/welcome" component={HomeContainer} />
+            <Redirect from="" to="/welcome" />
+          </Switch>
+        );
+      }
+      return (
+        <Fragment>
+          <MenuBar />
+          <Switch>
+            <PRoute exact path="/items" component={ItemsContainer} />
+            <PRoute exact path="/profile" componet={ProfileContainer} />
+            <PRoute exact path="/profile/:userid" component={ProfileContainer} />
+            <PRoute exact path="/share" component={ShareContainer} />
+            <Redirect from="" to="/items" />
+          </Switch>
+        </Fragment>
+      );
+    }}
+  </ViewerContext.Consumer>
 );
