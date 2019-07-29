@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Share from './Share';
 // import FullScreenLoader from '../../components/FullScreenLoader';
-// import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Query } from 'react-apollo';
 import { ALL_TAGS_QUERY } from '../../apollo/queries';
 
@@ -22,4 +22,4 @@ class ShareContainer extends Component {
   }
 }
 
-export default ShareContainer;
+export default (withStyles(styles)(ShareContainer));

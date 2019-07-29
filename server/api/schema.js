@@ -34,6 +34,10 @@ module.exports = gql`
     title: String!
   }
 
+  input AssignedBorrower {
+    id: ID!
+  }
+
   input SignupInput {
     fullname: String!
     email: String!

@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-/**
+/*
  * Item and user-related queries and mutations.
  */
 
@@ -28,7 +28,7 @@ const ItemFields = gql`
     }
   }
 `;
-// # @TODO: Query an item by its id and return the ItemFields fragment.
+
 export const ITEM_QUERY = gql`
   query item($id: ID!) {
     item(id: $id) {
@@ -38,7 +38,7 @@ export const ITEM_QUERY = gql`
   ${ItemFields}
 `;
 
-// # @TODO: Query items (optionally by tag id) and return the ItemFields fragment.
+
 export const ALL_ITEMS_QUERY = gql`
   query items($filter: ID!) {
     items(filter: $filter) {
@@ -48,8 +48,7 @@ export const ALL_ITEMS_QUERY = gql`
   ${ItemFields}
 `;
 
-// # @TODO: Query the bio, email, fullname, items, and borrowed for the user by id
-// # Use the ItemFields fragment for the items and borrowed fields.
+
 export const ALL_USER_ITEMS_QUERY = gql`
   query user($id: ID!) {
     user(id: $id) {
@@ -67,7 +66,7 @@ export const ALL_USER_ITEMS_QUERY = gql`
   ${ItemFields}
 `;
 
-// # @TODO: Query the id and title fields for tags.
+
 export const ALL_TAGS_QUERY = gql`
   query {
     tags {
@@ -77,8 +76,6 @@ export const ALL_TAGS_QUERY = gql`
   }
 `;
 
-// # @TODO: Pass the item and image into the addItem mutation as arguments
-// # and return the new item id when the mutation is complete.
 export const ADD_ITEM_MUTATION = gql`
   mutation addItem($item: NewItemInput!) {
     addItem(item: $item) {
@@ -87,11 +84,10 @@ export const ADD_ITEM_MUTATION = gql`
   }
 `;
 
-/**
+/*
  * Auth-related queries and mutations.
  */
 
-// @TODO: Query the id, email, fullname, and bio fields for the viewer.
 export const VIEWER_QUERY = gql`
   query {
     viewer {
@@ -103,15 +99,12 @@ export const VIEWER_QUERY = gql`
   }
 `;
 
-// @TODO: Run the logout mutation.
 export const LOGOUT_MUTATION = gql`
   mutation {
     logout
   }
 `;
 
-// @TODO: Pass the user into the signup mutation as an argument
-// and return the id of the new user when the mutation is complete.
 export const SIGNUP_MUTATION = gql`
   mutation signup($user: SignupInput!) {
     signup(user: $user) {
@@ -120,8 +113,6 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
-// @TODO: Pass the user into the login mutation as an argument
-// and return the id of the new user when the mutation is complete.
 export const LOGIN_MUTATION = gql`
   mutation login($user: LoginInput!) {
     login(user: $user) {

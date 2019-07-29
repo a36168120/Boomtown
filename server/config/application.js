@@ -16,7 +16,6 @@ module.exports = (app) => {
   app.set('JWT_COOKIE_NAME', 'bt-token');
   app.set('JWT_SECRET', process.env.JWT_SECRET || 'supersecretpassword');
 
-
   if (process.env.NODE_ENV === 'production') {
     const root = path.resolve(__dirname, '../public');
 

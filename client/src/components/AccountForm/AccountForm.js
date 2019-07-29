@@ -16,10 +16,6 @@ import {
 import { graphql, compose } from 'react-apollo';
 import validate from './helpers/validation';
 
-/**
- * @TODO: Uncomment the following lines when authentication is added to the form
- */
-
 import styles from "./styles";
 
 class AccountForm extends Component {
@@ -38,7 +34,6 @@ class AccountForm extends Component {
     const { classes, loginMutation, signupMutation } = this.props;
 
     return (
-      // @TODO: Wrap in Final Form <Form />
       <Form
         onSubmit=
         {values => {
@@ -53,7 +48,7 @@ class AccountForm extends Component {
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
                 <InputLabel htmlFor="fullname">Username</InputLabel>
-                {/* @TODO: Wrap in a Final Form <Field /> */}
+                
                 <Field name="fullname">
                   {({ input, meta }) => (
                     <Input
@@ -67,12 +62,12 @@ class AccountForm extends Component {
                     />
                   )}
                 </Field>
-                {/* @TODO: Close Final Form <Field /> */}
+                
               </FormControl>
             )}
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel htmlFor="email">Email</InputLabel>
-              {/* @TODO: Wrap in a Final Form <Field /> */}
+              
               <Field name="email">
                 {({ input, meta }) => (
                   <Input
@@ -86,11 +81,11 @@ class AccountForm extends Component {
                   />
                 )}
               </Field>
-              {/* @TODO: Close Final Form <Field /> */}
+              
             </FormControl>
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel htmlFor="password">Password</InputLabel>
-              {/* @TODO: Wrap in a Final Form <Field /> */}
+              
               <Field name="password">
                 {({ input, meta }) => (
                   <Input
@@ -104,7 +99,7 @@ class AccountForm extends Component {
                   />
                 )}
               </Field>
-              {/* @TODO: Close Final Form <Field /> */}
+              
             </FormControl>
             <FormControl className={classes.formControl}>
               <Grid
@@ -121,7 +116,7 @@ class AccountForm extends Component {
                   color="secondary"
                   disabled={
                     pristine || invalid
-                    // @TODO: This prop should depend on pristine or valid state of form
+                    
                   }
                 >
                   {this.state.formToggle ? "Enter" : "Create Account"}
@@ -131,7 +126,7 @@ class AccountForm extends Component {
                     className={classes.formToggle}
                     type="button"
                     onClick={() => {
-                      // @TODO: Reset the form on submit
+                      
                       form.reset();
                       this.setState({
                         formToggle: !this.state.formToggle
@@ -156,7 +151,7 @@ class AccountForm extends Component {
           </form>
         )}
       />
-      // @TODO: Close Final Form <Form />
+     
     );
   }
 }
@@ -184,9 +179,3 @@ export default compose(
   
   withStyles(styles)
 )(AccountForm);
-
-
-
-
-// @TODO: Use compose to add the login and signup mutations to this components props.
-// @TODO: Refetch the VIEWER_QUERY to reload the app and access authenticated routes.

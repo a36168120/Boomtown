@@ -1,9 +1,9 @@
-// These are the actions
+/* These are the actions */
 const UPDATE_ITEMS = "UPDATE_ITEMS";
 const RESET_ITEMS = "RESET_ITEMS";
 const RESET_ITEM_IMAGE = "RESET_ITEM_IMAGE";
 
-// below are the action creators
+/* below are the action creators */
 export const updateItems = item => ({
   type: UPDATE_ITEMS,
   text: item
@@ -17,7 +17,7 @@ export const resetItemImage = () => ({
   type: RESET_ITEM_IMAGE
 });
 
-// This is the init State
+/* This is the init State */
 const initState = {
   title: "Name your Item",
   description: "Describe your item",
@@ -27,7 +27,7 @@ const initState = {
   imageurl: "http://via.placeholder.com/350x250?text=Please select an image"
 };
 
-// Here is the reducer
+/* Here is the reducer */
 export default (state = initState, action) => {
   switch (action.type) {
     case UPDATE_ITEMS: {
