@@ -3,8 +3,8 @@ const UPDATE_ITEMS = "UPDATE_ITEMS";
 const RESET_ITEMS = "RESET_ITEMS";
 const RESET_ITEM_IMAGE = "RESET_ITEM_IMAGE";
 
-// below are the action creators 
-export const updateItems = (item) => ({
+// below are the action creators
+export const updateItems = item => ({
   type: UPDATE_ITEMS,
   text: item
 });
@@ -28,12 +28,7 @@ const initState = {
 };
 
 // Here is the reducer
-export default (
-  state = {
-    initState
-  },
-  action
-) => {
+export default (state = initState, action) => {
   switch (action.type) {
     case UPDATE_ITEMS: {
       return {
@@ -50,7 +45,7 @@ export default (
 
     case RESET_ITEM_IMAGE: {
       return {
-        ...state, 
+        ...state,
         imageurl: initState.imageurl
       };
     }
