@@ -129,9 +129,9 @@ module.exports = postgres => {
       const tagsQuery = {
         text: `SELECT * 
         FROM tags 
-        JOIN items_tag
-        ON tags.id = items_tag.tagid 
-        WHERE items_tag.itemid= $1`,
+        JOIN item_tags
+        ON tags.id = item_tags.tagid 
+        WHERE item_tags.itemid= $1`,
         values: [id]
       };
       try {
@@ -167,7 +167,7 @@ module.exports = postgres => {
               const tagId = tags.map(tag => tag.id);
 
               const itemTags = {
-                text: `INSERT INTO items_tag
+                text: `INSERT INTO item_tags
                 (tagid, itemid )
                 VALUES ${tagsQueryString([...tags], itemId)}`,
                 values: tagId
