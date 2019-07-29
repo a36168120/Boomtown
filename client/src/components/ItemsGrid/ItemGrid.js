@@ -9,10 +9,9 @@ import ItemCard from "../ItemCard/Itemcard";
 const ItemsGrid = ({items}) => {
   return (
     <div>
-      <Grid container>
-        {/* {console.log(items)}         */}
+      <Grid container spacing={6}>
         {items.map(item => (
-          <Grid container direction="row" justify="center" alignItems="center">
+          <Grid item xs={4} key={item.id} sm={12} md={6} lg={4}>
             <ItemCard item={item} />
           </Grid>
         ))}
