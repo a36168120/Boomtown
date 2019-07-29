@@ -7,16 +7,16 @@ const styles = theme => ({
       height: '100%',
       flexWrap: 'nowrap',
       justifyContent: 'center',
-      borderStyle: 'none'
+      borderStyle: 'none',
     },
 
     preview: {
-      
       width: '50%',
       height: '100%',
       paddingLeft: '50px',
       paddingRight: '50px',
-      borderStyle: 'none'
+      borderStyle: 'none',
+      marginLeft: '100px'
     },
 
     form: {
@@ -24,7 +24,8 @@ const styles = theme => ({
       height: '100%',
       paddingLeft: '50px',
       paddingRight: '50px',
-      borderStyle: 'none'
+      borderStyle: 'none',
+      marginRight: '100px'
     },
 
 });

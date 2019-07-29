@@ -109,6 +109,22 @@ class ShareItemForm extends Component {
     this.setState({ fileSelected: false });
   }
 
+  saveItem = async (values, tags, addItem) => {
+    try {
+      await addItem ({
+        variables: {
+          item: {
+            ...values,
+            tags: this.applyTags(tags)
+          }
+        }
+      })
+    }
+    catch (e) {
+      throw new Error (e)
+    };
+  }
+
   render() {
     const { tags, classes, updateItems } = this.props;
     return (
