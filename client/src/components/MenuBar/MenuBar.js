@@ -11,6 +11,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { LOGOUT_MUTATION } from "../../apollo/queries";
 import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
 import ProfileIcon from "@material-ui/icons/Fingerprint";
+import { ViewerContext } from "../../context/ViewerProvider";
 
 const ITEM_HEIGHT = 48;
 
@@ -27,76 +28,78 @@ const MenuBar = ({ classes, location }) => {
   }
 
   return (
-    <div>
-      <Mutation
-        mutation={LOGOUT_MUTATION}
-        onCompleted={() => client.resetStore()}
-      >
-        {logout => (
-          <div className={classes.bar}>
-            <Link to="/items">
-              <img src={logo} alt="BoomTown Logo" className={classes.logo} />
-            </Link>
-            <div>
-              <Link to="/share">
-                {location.pathname !== "/share" && (
-                  <Button>
-                    <AddCircleIcon
-                      color="action"
-                      fontSize="large"
-                      className={classes.shareButton}
-                    />
-                    SHARE SOMETHING
-                  </Button>
-                )}
+    <ViewerContext.Consumer>
+      {({ viewer }) => (
+        <Mutation
+          mutation={LOGOUT_MUTATION}
+          onCompleted={() => client.resetStore()}
+        >
+          {logout => (
+            <div className={classes.bar}>
+              <Link to="/items">
+                <img src={logo} alt="BoomTown Logo" className={classes.logo} />
               </Link>
+              <div>
+                <Link to="/share">
+                  {location.pathname !== "/share" && (
+                    <Button>
+                      <AddCircleIcon
+                        color="action"
+                        fontSize="large"
+                        className={classes.shareButton}
+                      />
+                      SHARE SOMETHING
+                    </Button>
+                  )}
+                </Link>
 
-              <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-                className={classes.button}
-              >
-                <MoreVertIcon />
-              </IconButton>
+                <IconButton
+                  aria-label="more"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                  className={classes.button}
+                >
+                  <MoreVertIcon />
+                </IconButton>
 
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                  style: {
-                    maxHeight: ITEM_HEIGHT * 4.5,
-                    width: 200
-                  }
-                }}
-              >
-                <MenuItem onClick={handleClick}>
-                  <Link to="/profile">
-                    <span>
-                      <ProfileIcon />
-                      Your Profile
-                    </span>
+                <Menu
+                  id="long-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: ITEM_HEIGHT * 4.5,
+                      width: 200
+                    }
+                  }}
+                >
+                  <Link to={"/profile/" + viewer.id}>
+                    <MenuItem onClick={handleClose}>
+                      <span>
+                        <ProfileIcon />
+                        Your Profile
+                      </span>
+                    </MenuItem>
                   </Link>
-                </MenuItem>
 
-                <MenuItem onClick={logout}>
-                  <Link to="/welcome">
-                    <span>
-                      <LogoutIcon />
-                      Sign out
-                    </span>
-                  </Link>
-                </MenuItem>
-              </Menu>
+                  <MenuItem onClick={logout}>
+                    <Link to="/welcome">
+                      <span>
+                        <LogoutIcon />
+                        Sign out
+                      </span>
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </div>
             </div>
-          </div>
-        )}
-      </Mutation>
-    </div>
+          )}
+        </Mutation>
+      )}
+    </ViewerContext.Consumer>
   );
 };
 

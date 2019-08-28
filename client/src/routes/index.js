@@ -6,9 +6,9 @@ import ProfileContainer from "../pages/Profile";
 import ShareContainer from "../pages/Share";
 
 import FullScreenLoader from "../components/FullScreenLoader";
-import {ViewerContext} from "../context/ViewerProvider";
-import PRoute from '../components/PrivateRoute';
-import MenuBar from '../components/MenuBar';
+import { ViewerContext } from "../context/ViewerProvider";
+import PRoute from "../components/PrivateRoute";
+import MenuBar from "../components/MenuBar";
 
 export default () => (
   <ViewerContext.Consumer>
@@ -29,7 +29,11 @@ export default () => (
           <Switch>
             <PRoute exact path="/items" component={ItemsContainer} />
             <PRoute exact path="/profile" componet={ProfileContainer} />
-            <PRoute exact path="/profile/:userid" component={ProfileContainer} />
+            <PRoute
+              exact
+              path="/profile/:userid"
+              component={ProfileContainer}
+            />
             <PRoute exact path="/share" component={ShareContainer} />
             <Redirect from="" to="/items" />
           </Switch>
