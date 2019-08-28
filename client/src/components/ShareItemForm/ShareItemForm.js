@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { Form, Field, FormSpy } from "react-final-form";
 import { connect } from "react-redux";
 
-
 import {
   Card,
   CardContent,
@@ -111,20 +110,21 @@ class ShareItemForm extends Component {
   }
 
   saveItem = async (values, tags, addItem) => {
+    console.log("zshdfgsdfgjkn");
     try {
-      await addItem ({
+      await addItem({
         variables: {
           item: {
             ...values,
             tags: this.applyTags(tags)
           }
         }
-      })
+      });
+    } catch (e) {
+      console.log(e);
+      throw new Error(e);
     }
-    catch (e) {
-      throw new Error (e)
-    };
-  }
+  };
 
   render() {
     const { tags, classes, updateItems } = this.props;
@@ -137,7 +137,8 @@ class ShareItemForm extends Component {
                 <CardContent>
                   <Form
                     validate={formState => this.validate(formState)}
-                    onSubmit={formState => this.onSubmit(formState)}
+                    onSubmit={values => this.saveItem(values, tags, addItem)}
+                    // onSubmit={formState => this.onSubmit(formState)}
                     render={({ handleSubmit, pristine, invalid }) => (
                       <form onSubmit={handleSubmit}>
                         <FormSpy

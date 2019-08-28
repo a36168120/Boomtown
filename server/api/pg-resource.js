@@ -1,7 +1,6 @@
-
 function tagsQueryString(tags, itemId) {
-  const parts = tags.map((tag, i) => `($${i+1}, ${itemId})`);
-  return parts.join(",") + ";"
+  const parts = tags.map((tag, i) => `($${i + 1}, ${itemId})`);
+  return parts.join(",") + ";";
 }
 
 module.exports = postgres => {
@@ -31,7 +30,7 @@ module.exports = postgres => {
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
         text: `SELECT *
-        FROM user
+        FROM users
         WHERE email = $1`,
         values: [email]
       };
@@ -39,8 +38,7 @@ module.exports = postgres => {
         const user = await postgres.query(findUserQuery);
         if (!user) throw "User was not found.";
         return user.rows[0];
-      } 
-      catch (e) {
+      } catch (e) {
         throw "User was not found.";
       }
     },
@@ -56,8 +54,7 @@ module.exports = postgres => {
       try {
         const user = await postgres.query(findUserQuery);
         return user.rows[0];
-      } 
-      catch (e) {
+      } catch (e) {
         throw "User was not found.";
       }
     },
@@ -73,8 +70,7 @@ module.exports = postgres => {
       try {
         const items = await postgres.query(getItems);
         return items.rows;
-      } 
-      catch (e) {
+      } catch (e) {
         throw "Items were not found.";
       }
     },
@@ -89,13 +85,12 @@ module.exports = postgres => {
       try {
         const items = await postgres.query(getItemsForUser);
         return items.rows;
-      } 
-      catch (e) {
+      } catch (e) {
         throw "Items were not found for owner.";
       }
     },
 
-   async getBorrowedItemsForUser(id) {
+    async getBorrowedItemsForUser(id) {
       const getBorrowedItemsForUser = {
         text: `SELECT *
         FROM items
@@ -105,8 +100,7 @@ module.exports = postgres => {
       try {
         const items = await postgres.query(getBorrowedItemsForUser);
         return items.rows;
-      } 
-      catch (e) {
+      } catch (e) {
         throw "Items were not found for borrower.";
       }
     },
@@ -119,8 +113,7 @@ module.exports = postgres => {
       try {
         const tags = await postgres.query(getTags);
         return tags.rows;
-      } 
-      catch (e) {
+      } catch (e) {
         throw "Tags were not found.";
       }
     },
@@ -137,14 +130,12 @@ module.exports = postgres => {
       try {
         const tags = await postgres.query(tagsQuery);
         return tags.rows;
-      } 
-      catch (e) {
+      } catch (e) {
         throw "Tags were not found for item.";
       }
     },
 
     async saveNewItem({ item, user }) {
-
       return new Promise((resolve, reject) => {
         postgres.connect((err, client, done) => {
           try {
@@ -158,10 +149,10 @@ module.exports = postgres => {
                 (title, description, ownerid)
                 VALUES ($1, $2, $3) 
                 RETURNING *`,
-                values: [title, description, user]
+                values: [title, description, user.id]
               };
               const newItem = await postgres.query(itemQuery);
-              
+
               /* Generate tag relationships query */
               const itemId = newItem.rows[0].id;
               const tagId = tags.map(tag => tag.id);
@@ -179,12 +170,10 @@ module.exports = postgres => {
                   throw err;
                 }
                 done();
-                resolve(newItem.rows[0])
+                resolve(newItem.rows[0]);
               });
             });
-          } 
-          catch (e) {
-            
+          } catch (e) {
             client.query("ROLLBACK", err => {
               if (err) {
                 throw err;

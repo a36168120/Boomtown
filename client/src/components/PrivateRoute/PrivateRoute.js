@@ -1,9 +1,9 @@
-import { Route, Redirect } from 'react-router-dom';
-import React from 'react';
+import { Route, Redirect } from "react-router-dom";
+import React from "react";
 
-import { ViewerContext } from '../../context/ViewerProvider';
+import { ViewerContext } from "../../context/ViewerProvider";
 
-const PrivateRoute = ({ component: Component, location, ...rest }) => (
+const PrivateRoute = ({ Component: Component, location, ...rest }) => (
   <ViewerContext.Consumer>
     {({ viewer }) => (
       <Route
@@ -12,7 +12,7 @@ const PrivateRoute = ({ component: Component, location, ...rest }) => (
           return (
             <Redirect
               to={{
-                pathname: '/',
+                pathname: "/",
                 state: { from: location }
               }}
             />

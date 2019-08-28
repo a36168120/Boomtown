@@ -74,7 +74,7 @@ const MenuBar = ({ classes, location }) => {
                   }
                 }}
               >
-                <MenuItem onClick={logout}>
+                <MenuItem onClick={handleClick}>
                   <Link to="/profile">
                     <span>
                       <ProfileIcon />

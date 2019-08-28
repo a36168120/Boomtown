@@ -20,11 +20,11 @@ function generateToken(user, secret) {
 
 module.exports = (app) => {
   return {
-    async signup(parent, {user: { fullname, email, password }}, {pgResource, req}) {
+    async signup(parent, {user: { fullname, email, password }}, context) {
       try {
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await pgResource.createUser({
+        const user = await context.pgResource.createUser({
           fullname: fullname,
           email: email,
           password: hashedPassword
@@ -33,20 +33,21 @@ module.exports = (app) => {
         setCookie({
           tokenName: app.get('JWT_COOKIE_NAME'),
           token: generateToken(user, app.get('JWT_SECRET')),
-          res: req.res
+          res: context.req.res
         });
 
         return {
           id: user.id
         };
       } catch (e) {
+        console.log(e)
         throw new AuthenticationError(e);
       }
     },
 
     async login(parent, {user: { email, password }}, context) {
       try {
-        const user = await context.pgResource.getUserAndPasswordForVerification(emai);
+        const user = await context.pgResource.getUserAndPasswordForVerification(email);
 
         const valid = await bcrypt.compare(password, user.password);
 

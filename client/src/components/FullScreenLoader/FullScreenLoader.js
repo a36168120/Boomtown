@@ -1,7 +1,7 @@
 import React from 'react';
 
-const FullScreenLoader = () => {
-
-};
+const FullScreenLoader = () => (
+    <p>Loading...</p>
+)
 
 export default FullScreenLoader;
