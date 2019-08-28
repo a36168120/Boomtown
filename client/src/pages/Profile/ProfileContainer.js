@@ -13,7 +13,7 @@ class ProfileContainer extends Component {
           <div>
             <Query
               query={ALL_USER_ITEMS_QUERY}
-              variables={{ id: this.props.match.paras.userId || viewer.id}}
+              variables={{ id: this.props.match.params.userId || viewer.id }}
             >
               {({ loading, error, data }) => {
                 if (loading) return "Loading...";
