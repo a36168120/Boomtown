@@ -4,6 +4,7 @@ import { Typography, CardHeader, Avatar } from "@material-ui/core";
 import Gravatar from "react-gravatar";
 import ItemsGrid from "../../components/ItemsGrid/ItemGrid";
 import styles from "./styles";
+import PropTypes from "prop-types";
 
 const Profile = ({ classes, user }) => {
   return (
@@ -39,6 +40,17 @@ const Profile = ({ classes, user }) => {
       </div>
     </div>
   );
+};
+
+Profile.propTypes = {
+  user: PropTypes.shape({
+    fullname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    items: PropTypes.array.isRequired,
+    borrowed: PropTypes.array.isRequired,
+    bio: PropTypes.string.isRequired
+  }),
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Profile);

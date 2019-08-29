@@ -26,6 +26,7 @@ import { ViewerContext } from "../../context/ViewerProvider";
 
 import { ADD_ITEM_MUTATION } from "../../apollo/queries";
 import { Mutation } from "react-apollo";
+import PropTypes from "prop-types";
 
 class ShareItemForm extends Component {
   constructor({ props }) {
@@ -295,6 +296,12 @@ class ShareItemForm extends Component {
     );
   }
 }
+
+ShareItemForm.prototypes = {
+  tags: PropTypes.array.isRequired,
+  classes: PropTypes.object.isReauired,
+  updateItems: PropTypes.func.isRequired
+};
 
 /* converts dispatch functions into props */
 const mapDispatchToProps = dispatch => ({

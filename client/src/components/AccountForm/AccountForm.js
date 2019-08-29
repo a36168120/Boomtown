@@ -12,9 +12,9 @@ import {
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
   VIEWER_QUERY
-} from '../../apollo/queries';
-import { graphql, compose } from 'react-apollo';
-import validate from './helpers/validation';
+} from "../../apollo/queries";
+import { graphql, compose } from "react-apollo";
+import validate from "./helpers/validation";
 
 import styles from "./styles";
 
@@ -35,8 +35,7 @@ class AccountForm extends Component {
 
     return (
       <Form
-        onSubmit=
-        {values => {
+        onSubmit={values => {
           const user = { variables: { user: values } };
           this.state.formToggle
             ? loginMutation(user).catch(error => this.setState({ error }))
@@ -48,7 +47,7 @@ class AccountForm extends Component {
             {!this.state.formToggle && (
               <FormControl fullWidth className={classes.formControl}>
                 <InputLabel htmlFor="fullname">Username</InputLabel>
-                
+
                 <Field name="fullname">
                   {({ input, meta }) => (
                     <Input
@@ -62,12 +61,11 @@ class AccountForm extends Component {
                     />
                   )}
                 </Field>
-                
               </FormControl>
             )}
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel htmlFor="email">Email</InputLabel>
-              
+
               <Field name="email">
                 {({ input, meta }) => (
                   <Input
@@ -81,11 +79,10 @@ class AccountForm extends Component {
                   />
                 )}
               </Field>
-              
             </FormControl>
             <FormControl fullWidth className={classes.formControl}>
               <InputLabel htmlFor="password">Password</InputLabel>
-              
+
               <Field name="password">
                 {({ input, meta }) => (
                   <Input
@@ -99,7 +96,6 @@ class AccountForm extends Component {
                   />
                 )}
               </Field>
-              
             </FormControl>
             <FormControl className={classes.formControl}>
               <Grid
@@ -114,10 +110,7 @@ class AccountForm extends Component {
                   variant="contained"
                   size="large"
                   color="secondary"
-                  disabled={
-                    pristine || invalid
-                    
-                  }
+                  disabled={pristine || invalid}
                 >
                   {this.state.formToggle ? "Enter" : "Create Account"}
                 </Button>
@@ -126,7 +119,6 @@ class AccountForm extends Component {
                     className={classes.formToggle}
                     type="button"
                     onClick={() => {
-                      
                       form.reset();
                       this.setState({
                         formToggle: !this.state.formToggle
@@ -143,15 +135,14 @@ class AccountForm extends Component {
             <Typography className={classes.errorMessage}>
               {(this.state.error &&
                 this.state.formToggle &&
-                this.state.error.graphQLErrors[0].message) ||
+                this.state.error.graphQLErrors.message) ||
                 (this.state.error &&
                   !this.state.formToggle &&
-                  this.state.error.graphQLErrors[0].message)}
+                  this.state.error.graphQLErrors.message)}
             </Typography>
           </form>
         )}
       />
-     
     );
   }
 }
@@ -167,15 +158,15 @@ export default compose(
     options: {
       refetchQueries
     },
-    name: 'signupMutation'
+    name: "signupMutation"
   }),
 
   graphql(LOGIN_MUTATION, {
     options: {
       refetchQueries
     },
-    name: 'loginMutation'
+    name: "loginMutation"
   }),
-  
+
   withStyles(styles)
 )(AccountForm);

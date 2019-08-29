@@ -3,10 +3,9 @@ import Grid from "@material-ui/core/Grid";
 import styles from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import ItemCard from "../ItemCard/Itemcard";
+import PropTypes from "prop-types";
 
-
-
-const ItemsGrid = ({items}) => {
+const ItemsGrid = ({ items }) => {
   return (
     <div>
       <Grid container spacing={6}>
@@ -18,6 +17,10 @@ const ItemsGrid = ({items}) => {
       </Grid>
     </div>
   );
+};
+
+ItemsGrid.prototypes = {
+  items: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ItemsGrid);
